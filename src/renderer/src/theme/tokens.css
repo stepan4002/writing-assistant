@@ -1,0 +1,74 @@
+/*
+ * Writing Assistant design tokens.
+ * Indigo accent, slate ink, white surfaces, Inter/Segoe UI type, soft rounded cards.
+ * Each suggestion category has its own underline color.
+ */
+:root {
+  /* Brand */
+  --wa-accent: #4f46e5;
+  --wa-accent-deep: #4338ca;
+  --wa-accent-soft: #eef2ff;
+  --wa-ink: #374151;
+  --wa-ink-strong: #111827;
+  --wa-muted: #6b7280;
+  --wa-line: #e5e7eb;
+  --wa-bg: #ffffff;
+  --wa-bg-soft: #f8fafc;
+
+  /* Four suggestion categories → underline + accent colors */
+  --cat-correctness: #dc2626; /* red    — spelling, grammar, punctuation */
+  --cat-clarity: #0284c7;     /* blue   — conciseness, readability */
+  --cat-engagement: #059669;  /* green  — vocabulary, vivid word choice */
+  --cat-delivery: #9333ea;    /* purple — tone, formality, politeness */
+  --cat-styleguide: #8a8a8a;  /* gray   — reserved (team style rules) */
+
+  /* Shape & depth */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 6px 20px rgba(0, 0, 0, 0.18);
+
+  /* Type */
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-editor: 'Inter', 'Segoe UI', Georgia, serif;
+
+  /* Layout */
+  --sidebar-w: 340px;
+  --editor-col: 720px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--wa-ink);
+  background: var(--wa-bg-soft);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Utility: category color lookups by data attribute */
+[data-cat='correctness'] {
+  --cat: var(--cat-correctness);
+}
+[data-cat='clarity'] {
+  --cat: var(--cat-clarity);
+}
+[data-cat='engagement'] {
+  --cat: var(--cat-engagement);
+}
+[data-cat='delivery'] {
+  --cat: var(--cat-delivery);
+}

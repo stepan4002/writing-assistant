@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+out/
+releases/
+build/
+*.tsbuildinfo
+
+# Local QA output (smoke-test screenshots)
+qa/
+
+# Env & secrets
+.env
+.env.*
+*.pfx
+*.p12
+
+# Logs
+*.log
+
+# Tooling / OS
+.gitnexus/
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini

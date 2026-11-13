@@ -1,0 +1,23 @@
+appId: io.github.stepan4002.writingassistant
+productName: Writing Assistant
+directories:
+  output: releases/${version}
+  buildResources: build-resources
+files:
+  - out/**/*
+  - package.json
+# Keep WASM files unpacked so they resolve from disk in the packaged app.
+asarUnpack:
+  - '**/*.wasm'
+win:
+  target:
+    - nsis
+  icon: build-resources/icon.png
+  # Stable file name so https://github.com/<owner>/<repo>/releases/latest/download/WritingAssistant-Setup.exe always works
+  artifactName: WritingAssistant-Setup.${ext}
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  createDesktopShortcut: true
+  shortcutName: Writing Assistant

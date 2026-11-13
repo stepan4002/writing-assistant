@@ -1,0 +1,36 @@
+name: Release
+
+# Publishing a GitHub Release builds the Windows installer from that tag
+# and attaches it, so every download is built from public source.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  installer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - name: Attach installer + checksum
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $exe = Get-ChildItem releases -Recurse -Filter WritingAssistant-Setup.exe | Select-Object -First 1
+          $hash = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash.ToLower()
+          "$hash  WritingAssistant-Setup.exe" | Out-File -Encoding ascii SHA256SUMS.txt
+          gh release upload "${{ github.event.release.tag_name }}" $exe.FullName SHA256SUMS.txt --clobber

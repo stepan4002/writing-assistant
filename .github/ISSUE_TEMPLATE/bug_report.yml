@@ -1,0 +1,24 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead. A short sample sentence helps a lot.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versions
+      description: App version (window title / installer), Windows version, Ollama model if used.
+  - type: dropdown
+    id: engine
+    attributes:
+      label: Which suggestions?
+      options:
+        - Spelling / grammar (built-in engine)
+        - AI clarity / engagement / delivery (Ollama)
+        - Not about suggestions

@@ -1,0 +1,46 @@
+{
+  "name": "writing-assistant",
+  "productName": "Writing Assistant",
+  "version": "0.2.0",
+  "description": "Private, offline grammar, spelling and style checker for Windows. Embedded harper.js engine plus optional local AI via Ollama. Your text never leaves your computer.",
+  "main": "./out/main/index.js",
+  "author": "Nikos",
+  "license": "MIT",
+  "homepage": "https://github.com/stepan4002/writing-assistant",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stepan4002/writing-assistant.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stepan4002/writing-assistant/issues"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "start": "electron-vite preview",
+    "dist": "electron-vite build && electron-builder --win --config electron-builder.yml",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.6.2",
+    "@codemirror/state": "^6.4.1",
+    "@codemirror/view": "^6.34.1",
+    "harper.js": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^5.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.0",
+    "vitest": "^3.2.7"
+  }
+}

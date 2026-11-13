@@ -1,0 +1,55 @@
+/* Squiggly underlines, one color per suggestion category. All four are wavy. */
+.sq {
+  text-decoration: underline wavy;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+.sq:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.sq-correctness {
+  text-decoration-color: var(--cat-correctness);
+}
+.sq-clarity {
+  text-decoration-color: var(--cat-clarity);
+}
+.sq-engagement {
+  text-decoration-color: var(--cat-engagement);
+}
+.sq-delivery {
+  text-decoration-color: var(--cat-delivery);
+}
+
+/* Highlight a suggestion while its card is focused/hovered. */
+.sq-active {
+  background-color: rgba(21, 195, 154, 0.14);
+  border-radius: 2px;
+}
+
+/* Editor chrome: strip CM's default outline, inherit the page's writing type. */
+.cm-editor {
+  outline: none;
+  height: 100%;
+}
+.cm-editor .cm-scroller {
+  font-family: var(--font-editor);
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--wa-ink-strong);
+}
+.cm-editor .cm-content {
+  padding: 0;
+  caret-color: var(--wa-accent-deep);
+}
+.cm-editor .cm-line {
+  padding: 0;
+}
+.cm-focused {
+  outline: none !important;
+}
+.cm-editor .cm-placeholder {
+  color: #b7bfc6;
+}
