@@ -56,16 +56,19 @@ function Install-WritingAssistant {
         if ($downloaded) { Remove-Item $setup -Force -ErrorAction SilentlyContinue }
     }
 
+    # The uninstaller sits in the install folder, next to the app's .exe.
     $entry = Find-Uninstaller
     $exePath = $null
-    if ($entry -and $entry.InstallLocation) { $exePath = Join-Path $entry.InstallLocation "$Name.exe" }
-    if (-not $exePath -or -not (Test-Path $exePath)) { $exePath = Join-Path $env:LOCALAPPDATA "Programs\writing-assistant\$Name.exe" }
+    if ($entry -and $entry.UninstallString) {
+        $uninstaller = ($entry.UninstallString -replace '^"([^"]+)".*$', '$1')
+        $exePath = Join-Path (Split-Path $uninstaller -Parent) "$Name.exe"
+    }
 
     Write-Host ''
     Write-Host "$Name is installed. Find it in the Start menu or on your desktop." -ForegroundColor Green
     Write-Host '  - Spelling and grammar work offline right away.'
     Write-Host '  - Optional AI style suggestions: install Ollama (https://ollama.com) - the app guides you.'
-    if ($env:WA_NO_START -ne '1' -and (Test-Path $exePath)) {
+    if ($env:WA_NO_START -ne '1' -and $exePath -and (Test-Path $exePath)) {
         Start-Process -FilePath $exePath
     }
 }
