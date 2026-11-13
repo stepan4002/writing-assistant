@@ -17,6 +17,23 @@ function Install-WritingAssistant {
     $Url = 'https://github.com/stepan4002/writing-assistant/releases/latest/download/WritingAssistant-Setup.exe'
     $Name = 'Writing Assistant'
 
+    # Windows may briefly refuse to run a brand-new unsigned .exe ("Access is denied")
+    # while antivirus scans it on first launch. Retry a few times before giving up.
+    function Start-WithRetry([string]$File, [string[]]$Arguments, [switch]$Wait) {
+        for ($i = 1; $i -le 6; $i++) {
+            try {
+                $params = @{ FilePath = $File; ErrorAction = 'Stop' }
+                if ($Arguments) { $params.ArgumentList = $Arguments }
+                if ($Wait) { $params.Wait = $true; $params.PassThru = $true }
+                return Start-Process @params
+            } catch {
+                if ($i -eq 6) { throw }
+                Write-Host "    Windows is still checking the file, retrying in 5 s ($i/5)..." -ForegroundColor DarkGray
+                Start-Sleep -Seconds 5
+            }
+        }
+    }
+
     function Find-Uninstaller {
         $keys = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*'
         Get-ItemProperty $keys -ErrorAction SilentlyContinue |
@@ -50,7 +67,7 @@ function Install-WritingAssistant {
     try {
         Get-Process -Name $Name -ErrorAction SilentlyContinue | Stop-Process -Force
         Write-Host "==> Installing for this user (no admin needed)" -ForegroundColor Cyan
-        $p = Start-Process -FilePath $setup -ArgumentList '/S', '/currentuser' -Wait -PassThru
+        $p = Start-WithRetry -File $setup -Arguments '/S', '/currentuser' -Wait
         if ($p.ExitCode -ne 0) { throw "The installer exited with code $($p.ExitCode)." }
     } finally {
         if ($downloaded) { Remove-Item $setup -Force -ErrorAction SilentlyContinue }
@@ -69,7 +86,11 @@ function Install-WritingAssistant {
     Write-Host '  - Spelling and grammar work offline right away.'
     Write-Host '  - Optional AI style suggestions: install Ollama (https://ollama.com) - the app guides you.'
     if ($env:WA_NO_START -ne '1' -and $exePath -and (Test-Path $exePath)) {
-        Start-Process -FilePath $exePath
+        try {
+            Start-WithRetry -File $exePath | Out-Null
+        } catch {
+            Write-Host "  - Could not start it automatically; open Writing Assistant from the Start menu." -ForegroundColor Yellow
+        }
     }
 }
 
